@@ -10,7 +10,7 @@ const loadJQueryAndDataTables = async () => {
   return $;
 };
 
-const RoleAccessLayer = () => {
+const JTMUsersLayer = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,9 +19,11 @@ const RoleAccessLayer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/api/Users/GetAllRoles");
+        console.log("Fetching data...");
+        const response = await axiosInstance.get("/api/Users/GetAllUser");
         setData(response.data);
       } catch (err) {
+        console.error("API Call Failed:", err);
         setError("Failed to fetch data");
       } finally {
         setLoading(false);
@@ -39,7 +41,7 @@ const RoleAccessLayer = () => {
           window.$ = window.jQuery = $;
           table = $("#dataTable").DataTable({
             pageLength: 10,
-            destroy: true,
+            destroy: true, // Ensure reinitialization doesn't conflict
           });
           setTableInitialized(true);
         })
@@ -53,12 +55,12 @@ const RoleAccessLayer = () => {
         }
       };
     }
-  }, [data]);
+  }, [data]); // Runs only when data is updated
 
   return (
     <div className="card basic-data-table">
       <div className="card-header">
-        <h5 className="card-title mb-0">JTM Roles</h5>
+        <h5 className="card-title mb-0">JTM Users</h5>
       </div>
       <div className="card-body">
         {loading ? (
@@ -75,7 +77,9 @@ const RoleAccessLayer = () => {
                     <label className="form-check-label">S.L</label>
                   </div>
                 </th>
-                <th scope="col">Role</th>
+                <th scope="col">UserName</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date Joined</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -91,7 +95,9 @@ const RoleAccessLayer = () => {
                         </label>
                       </div>
                     </td>
-                    <td>{user.name}</td>
+                    <td>{user.userName}</td>
+                    <td>{user.email}</td>
+                    <td>{new Date(user.dateJoined).toLocaleDateString()}</td>
                     <td>
                       <Link
                         href="#"
@@ -129,4 +135,4 @@ const RoleAccessLayer = () => {
   );
 };
 
-export default RoleAccessLayer;
+export default JTMUsersLayer;

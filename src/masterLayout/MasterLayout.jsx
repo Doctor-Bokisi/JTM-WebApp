@@ -154,8 +154,8 @@ const MasterLayout = ({ children }) => {
             </li>
             <li>
               <Link
-                href='/role-access'
-                className={pathname === "/role-access" ? "active-page" : ""}
+                href='/jtm-users'
+                className={pathname === "/jtm-users" ? "active-page" : ""}
               >
                 <Icon
                   icon='carbon:user'
